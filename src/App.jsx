@@ -19,18 +19,29 @@ export function App() {
   }
 
   function getWeatherLocation() {
-    fetch(
-      `https://api.openweathermap.org/data/2.5/weather?q=${location}&units=metric&appid=${apiKey}&lang=pt_br`,
-    )
-      .then((response) => response.json())
-      .then((data) => {
-        setWeather(data)
-        setLocation('')
-      })
+    try {
+      fetch(
+        `https://api.openweathermap.org/data/2.5/weather?q=${location}&units=metric&appid=${apiKey}&lang=pt_br`,
+      )
+        .then((response) => {
+          if (!response.ok) {
+            alert('Local não encontrado')
+            setLocation('')
+            throw new Error('City not found')
+          }
+          return response.json()
+        })
+        .then((data) => {
+          setWeather(data)
+          setLocation('')
+        })
+    } catch (error) {
+      alert('Cidade não encontrada!')
+    }
   }
 
   return (
-    <div className="w-full h-screen flex items-center justify-center bg-slate-900 text-slate-100">
+    <div className="bg-slate-900 w-full h-screen flex items-center justify-center text-slate-100">
       <div className="max-w-xl w-[90%]">
         <h1 className="text-4xl font-bold text-center mb-4">Weather io</h1>
 
@@ -39,7 +50,7 @@ export function App() {
           onSubmit={handleSubmit}
         >
           <input
-            className="w-full bg-transparent p-4 rounded outline-none focus-within:outline-1 focus-within:outline-indigo-600"
+            className="w-full bg-transparent p-4 outline-none border-b-2 focus-within:border-indigo-600 transition-all"
             onChange={handleChangeLocale}
             value={location}
             type="text"
