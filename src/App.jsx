@@ -57,7 +57,7 @@ export function App() {
             placeholder="Digite aqui o nome da cidade"
           />
           <button
-            className="bg-indigo-600 p-4 font-bold text-lg"
+            className="bg-green-600 p-4 font-bold text-lg"
             onClick={getWeatherLocation}
           >
             Pesquisar
